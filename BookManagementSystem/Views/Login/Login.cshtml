@@ -1,0 +1,121 @@
+﻿@{ 
+    Layout = null;
+}
+<html>
+<head>
+    <title></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+    <script src="~/lib/jquery/dist/jquery.js"></script>
+    <script src="~/lib/jquery-validation/dist/jquery.validate.js"></script>
+    <script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+    <style>
+        .card {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
+        .error{
+            color:Red
+        }
+        .user-icon {
+            color: #02496d;
+            font-size: 4rem;
+        }
+    </style>
+    <script>
+
+    $(function() {
+        debugger;
+        $("#LoginDetilasForm").validate({
+                rules: {
+                UserName:
+                    {
+                        required: true,
+                        maxlength: 20
+                    },
+                Password:
+                    {
+                        required: true,
+                        maxlength: 16
+                    }
+                },
+                messages:
+                {
+                    UserName:
+                    {
+                        required: "User Name is required",
+                        maxlength: " Name should be 20 charcter"
+                    },
+                    Password:
+                    {
+                        required: "Password is required",
+                        maxlength: "Password should be 20 charcter"
+                    }
+                }
+            });
+
+    });
+
+    function SubmitDetails() {
+        if ($("#LoginDetilasForm").valid()) {
+            LoginCheck()
+        }
+    }
+
+
+        function btn() {
+             window.location.href = "@Url.Action("StudentDetailsList", "StudentDetialsMark")";
+         }
+
+
+      function LoginCheck() {
+
+            $.ajax({
+                url:"@Url.Action("LoginCheck", "Login")",
+                type: "POST", //send it through get method
+                data: {
+                    UserName: $("#TxtUserName").val(),
+                    Password: $("#TxtPassWord").val(),
+                },
+                success: function (data) {
+                    var mssg = data;
+                    if (mssg == "Login Succesully") {
+                        window.location.href = "@Url.Action("BookDetailsList","BookDetailManagement")";
+                    }
+                    else {
+                        alert(data)
+                    }
+                },
+                error: function (xhr) {
+
+                }
+            });
+
+    }
+
+    </script>
+</head>
+<body>
+    <div class="container pt-3 mt-5">
+        <div class="row justify-content-sm-center">
+            <div class="col-sm-6 col-md-4">
+
+                <div class="card border-info text-center">
+                    <div class="card-header">
+                        Sign in to Admin
+                    </div>
+                    <div class="card-body">
+                       <span class="fa fa-user user-icon mb-3"></span>
+
+                        <form class="form-signin" id="LoginDetilasForm">
+                            <input type="text" name="UserName" class="form-control mb-2" placeholder="UserName" id="TxtUserName" >
+                            <input type="password" name="Password" class="form-control mb-2" placeholder="Password" id="TxtPassWord">
+                            <button class="btn btn-lg btn-primary btn-block mb-1" type="button" onclick="SubmitDetails()">Login in</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

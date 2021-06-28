@@ -1,0 +1,90 @@
+﻿@model IEnumerable<BookManagementSystem.Core.Models.BooksDetails>
+
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<style>
+    th, td {
+        text-align: center;
+    }
+
+    h3 {
+        color: #d42c2c
+    }
+
+    .th-tr {
+        background-color: #ce9f9f;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+        <div class="row">
+            <h3>Book Details</h3>
+            <div class=" ml-auto">
+                <button type="button" class="btn btn-primary btn-sm" onclick="addBookDetials()"><span class="fa fa-plus"></span> Book details</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr class="th-tr">
+                            <th>Title</th>
+                            <th>Author</th>
+                            <th>Price</th>
+                            <th colspan="4">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @if (Model != null)
+                        {
+                            foreach (var item in Model)
+                            {
+                                <tr>
+                                    <td>@item.BookTitle</td>
+                                    <td>@item.AuthorName</td>
+                                    <td>@item.Price</td>
+                                    <td colspan="3">
+                                        <button class="btn btn-success btn-sm" id="@item.BookDetailId" onclick="editPage(this.id)"><span class="fa fa-pencil"></span></button>
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-danger btn-sm" id="@item.BookDetailId" onclick="deletePage(this.id)"><span class="fa fa-trash"></span></button>
+                                    </td>
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+                                <td colspan="8">No Record Found</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (TempData["Alert"] != null)
+{
+    <script type="text/javascript">
+        alert("@Html.Raw(@TempData["Alert"].ToString())");
+    </script>
+}
+
+<script>
+    function addBookDetials() {
+        window.location.href = "@Url.Action("BookDetailsAddEdit", "BookDetailManagement")";
+    }
+    function editPage(id) {
+        window.location.href = "@Url.Action("BookDetailsAddEdit", "BookDetailManagement")?BookDetailId=" + id;
+    }
+    function deletePage(id) {
+        if (confirm("Are you Sure Delete Your Record ?")) {
+            window.location.href = "@Url.Action("BookDetailsDelete", "BookDetailManagement")?BookDetailId=" + id;
+        }
+    }
+</script>
